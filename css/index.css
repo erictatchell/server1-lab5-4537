@@ -23,6 +23,26 @@ body {
     margin-bottom: 20px;
 }
 
+/* chatgpt */
+.res-panel {
+    height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+/* chatgpt */
+.res-area {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px; 
+    min-height: 100px; 
+    overflow-y: auto; 
+    margin-top: 20px; 
+}
+
 .input-area {
     display: flex;
     align-items: center;

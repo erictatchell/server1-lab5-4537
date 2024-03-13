@@ -1,3 +1,31 @@
+// chatgpt generated this for formatting the data
+function renderTable(data, container) {
+    container.innerHTML = ''; // clear
+    const table = document.createElement('table');
+    const headers = Object.keys(data[0]);
+    const headerRow = document.createElement('tr');
+
+    headers.forEach(headerText => {
+        const header = document.createElement('th');
+        header.textContent = headerText;
+        headerRow.appendChild(header);
+    });
+
+    table.appendChild(headerRow);
+
+    data.forEach(rowData => {
+        const row = document.createElement('tr');
+        headers.forEach(header => {
+            const cell = document.createElement('td');
+            cell.textContent = rowData[header];
+            row.appendChild(cell);
+        });
+        table.appendChild(row);
+    });
+
+    container.appendChild(table);
+}
+
 document.addEventListener('DOMContentLoaded', (e) => {
     e.preventDefault();
     const insertButton = document.getElementById('insert');
@@ -10,16 +38,17 @@ document.addEventListener('DOMContentLoaded', (e) => {
 
     insertButton.addEventListener('click', () => {
         const jsonStatement = {
-            "sql": "INSERT INTO patient (name, dateOfBirth) VALUES ('Sara Brown', '1901-01-01'), ('John Smith', '1941-01-01'), ('Jack Ma', '1961-01-30'), ('Elon Musk', '1999-01-01');"
+            "sql": messages.insertDefault
         }
         const statement = JSON.stringify(jsonStatement);
 
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'https://lionfish-app-krkhm.ondigitalocean.app/api/query/');
-        xhr.setRequestHeader('Content-Type', 'text/plain');
+        xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                responseArea.innerHTML = xhr.responseText;
+                const responseData = JSON.parse(xhr.responseText);
+                renderTable(responseData, responseArea);
             }
         };
         xhr.send(statement);
@@ -35,7 +64,8 @@ document.addEventListener('DOMContentLoaded', (e) => {
         xhr.setRequestHeader('Content-Type', 'text/plain');
         xhr.onload = () => {
             if (xhr.status === 200) {
-                responseArea.innerHTML = xhr.responseText;
+                const responseData = JSON.parse(xhr.responseText);
+                renderTable(responseData, responseArea);
             } else {
                 alert(messages.errorText + ' ' + xhr.statusText);
             }
